@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
 import './app.css';
@@ -10,7 +10,8 @@ function App() {
     const [cards, setCards]             = useState([])
     const [searchQuery, setSearchQuery] = useState(`Minsk`)
     const [isLoading, setIsLoading] = useState(false) // false тк по умолч никакая загрузка не идет
-    const handleRequest                  = () => {
+
+    const handleRequest                  = useCallback(() => {
         setIsLoading(true)
         api.search({query: searchQuery})
             .then(response => {
@@ -30,10 +31,12 @@ function App() {
             })
             .finally(()=> setIsLoading(false))
 
-    }
+    
+         }, [searchQuery])
+
     useEffect(() => {
         handleRequest()
-    }, [searchQuery])
+}, [searchQuery, handleRequest])
 
 // console.log('cards', cards)
 
